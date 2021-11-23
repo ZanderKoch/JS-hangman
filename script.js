@@ -52,7 +52,10 @@ function init() {
  */
 function startGame(){
     selectedWord = randomWord();
-    console.log("chosenWord: " + chosenWord);
+    console.log("selectedWord: " + selectedWord);
+    showLetterBoxes();
+    hangmanImg.src = pics/h0.png
+
 }
 
 /**
@@ -70,7 +73,12 @@ function randomWord(){
  * @param {Boolean} manHanged 
  */
 function endGame(manHanged){
-    
+
+}
+
+/** */
+function showLetterBoxes(){
+
 }
 
 
