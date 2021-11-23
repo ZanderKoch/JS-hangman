@@ -7,9 +7,20 @@
 // JavaScript
 
 // Globala variabler
+/**@type {String} valt ord för pågående runda */
+let selectedWord;
 
-/**@type {String} chosen word for current round*/
-let chosenWord;
+/**@type {Element[]} array av referenser till bokstavsrutespanen */
+let letterBoxes;
+
+/**@type {Element} */
+let hangmanImg;
+
+/**@type {Number} nummer för aktuell bild (0-6) */
+let hangmanImgNr;
+
+/**@type {Element[]} referens till diven för meddelanden */
+let msgElem;
 
 // Funktion som körs då hela webbsidan är inladdad, dvs då all HTML-kod är utförd
 // Initiering av globala variabler samt koppling av funktioner till knapparna.
@@ -19,11 +30,18 @@ function init() {
 				"SKOGSHYDDA","BILNUMMER","BLYERTSPENNA","SUDDGUMMI","KLÄDSKÅP","VEDSPIS","LJUSSTAKE","SKRIVBORD","ELDGAFFEL","STEKPANNA",
 				"KASTRULL","KAFFEBRYGGARE","TALLRIK","SOFFBORD","TRASMATTA","FLYGPLAN","FLYGPLATS","TANGENTBORD"];
 
-	letterbuttons = document.querySelectorAll("#letterButtons button");
-    for(let button in letterbuttons){
-
+	let letterbuttons = document.querySelectorAll("#letterButtons button");
+    for(let button of letterbuttons){
+        addListener(button, "click", guessLetter);
     }
+    let startGameBtn = document.querySelector("#startGameBtn");
+    addListener(startGameBtn, "click", startGame);
 
+    hangmanImg = document.querySelector("#hangman");
+    msgElem = document.querySelector("#message");
+
+    /**@type {Number} loopvariabel */
+    let i;
 } // End init
 
 
@@ -33,8 +51,8 @@ function init() {
  * @version 1.0
  */
 function startGame(){
-    chosenWord = randomWord();
-    console.log("chosenWord" + chosenWord);
+    selectedWord = randomWord();
+    console.log("chosenWord: " + chosenWord);
 }
 
 /**
@@ -48,12 +66,22 @@ function randomWord(){
 }
 
 /**
+ * skriver ut ett meddelande beroende på manHanged
+ * @param {Boolean} manHanged 
+ */
+function endGame(manHanged){
+    
+}
+
+
+/**
  * körs då användare trycker på bokstavsknapp, kollar bokstavs förekomst i valt
  * ord, om ja: lägg till i kända bokstäver, om inte: öka felgissningar.
  * updatera sedan gränssnitt
  */
 function guessLetter(){
     let letter = this.value;
+    console.log(letter);
 
 }
 
