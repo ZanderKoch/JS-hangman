@@ -54,7 +54,8 @@ function startGame(){
     selectedWord = randomWord();
     console.log("selectedWord: " + selectedWord);
     showLetterBoxes();
-    hangmanImg.src = pics/h0.png
+    hangmanImg.src = "pics/h0.png";
+    hangmanImgNr = 0;
 
 }
 
@@ -76,9 +77,20 @@ function endGame(manHanged){
 
 }
 
-/** */
+/**
+ * lägger till spans i dokumentet baserat på valt ord
+ */
 function showLetterBoxes(){
+    let newCode = "";
+    let i;
 
+    for(i = 0; i < selectedWord.length; i++){
+        newCode +=  "<span>&nbsp;</span> ";
+    }
+    let target = document.querySelector("#letterBoxes");
+    target.innerHTML = newCode;
+    letterBoxes = document.querySelectorAll("#letterBoxes span");
+    console.log(letterBoxes);
 }
 
 
@@ -90,6 +102,18 @@ function showLetterBoxes(){
 function guessLetter(){
     let letter = this.value;
     console.log(letter);
+    let i;
+    let letterFound = false;
+    let correctLettersCount = 0;
+    
+
+    for(i = 0; i < selectedWord.length; i++){
+        if (letter == selectedWord.charAt(i)) {
+            console.log(letterBoxes);
+            letterBoxes[i].innerHTML = letter;
+            letterFound = true;
+        }
+    }
 
 }
 
