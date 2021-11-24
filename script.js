@@ -74,7 +74,13 @@ function randomWord(){
  * @param {Boolean} manHanged 
  */
 function endGame(manHanged){
-
+    if(manHanged){
+        msgElem.innerHTML ="Snubben hängdes :("
+            + "<br>Det korrekta ordet var: " + selectedWord;
+    }
+    else{
+        msgElem.innerHTML = "grattis du gissade hela ordet"
+    }
 }
 
 /**
