@@ -22,20 +22,27 @@ let hangmanImgNr;
 /**@type {Element[]} referens till diven för meddelanden */
 let msgElem;
 
+/**@type {Element} */
+let startGameBtn;
+
+/**@type {Element} */
+let letterButtons;
+
 // Funktion som körs då hela webbsidan är inladdad, dvs då all HTML-kod är utförd
 // Initiering av globala variabler samt koppling av funktioner till knapparna.
 function init() {
-	
 	wordList = ["BLOMMA","LASTBIL","SOPTUNNA","KÖKSBORD","RADIOAPPARAT","VINTER","SOMMAR","DATORMUS","LEJON","ELEFANTÖRA","JULTOMTE",
 				"SKOGSHYDDA","BILNUMMER","BLYERTSPENNA","SUDDGUMMI","KLÄDSKÅP","VEDSPIS","LJUSSTAKE","SKRIVBORD","ELDGAFFEL","STEKPANNA",
 				"KASTRULL","KAFFEBRYGGARE","TALLRIK","SOFFBORD","TRASMATTA","FLYGPLAN","FLYGPLATS","TANGENTBORD"];
 
-	let letterbuttons = document.querySelectorAll("#letterButtons button");
-    for(let button of letterbuttons){
+	letterButtons = document.querySelectorAll("#letterButtons button");
+    for(let button of letterButtons){
         addListener(button, "click", guessLetter);
+        button.disabled = true;
     }
-    let startGameBtn = document.querySelector("#startGameBtn");
+    startGameBtn = document.querySelector("#startGameBtn");
     addListener(startGameBtn, "click", startGame);
+    startGameBtn.disabled = false;
 
     hangmanImg = document.querySelector("#hangman");
     msgElem = document.querySelector("#message");
@@ -51,12 +58,25 @@ function init() {
  * @version 1.0
  */
 function startGame(){
-    selectedWord = randomWord();
-    console.log("selectedWord: " + selectedWord);
-    showLetterBoxes();
+    if(wordList.length > 0){
+       selectedWord = randomWord();
+        console.log("selectedWord: " + selectedWord);
+        showLetterBoxes(); 
+    }
+    else{
+        msgElem.innerHTML = "Tyvär är det slut på ord"
+    }
+
     hangmanImg.src = "pics/h0.png";
     hangmanImgNr = 0;
 
+    console.log(letterButtons);    
+    for(let button of letterButtons){
+        button.disabled = false;
+    }
+    startGameBtn.disabled = true;
+
+    msgElem.innerHTML = "";
 }
 
 /**
@@ -66,7 +86,9 @@ function startGame(){
  */
 function randomWord(){
     let randomIndex = Math.floor(Math.random() * wordList.length - 2);
-    return wordList[randomIndex];
+    result = wordList[randomIndex];
+    wordList.splice(randomIndex, 1);
+    return result;
 }
 
 /**
@@ -81,6 +103,11 @@ function endGame(manHanged){
     else{
         msgElem.innerHTML = "grattis du gissade hela ordet"
     }
+
+    for(let button of letterButtons){
+        button.disabled = true;
+    }
+    startGameBtn.disabled = false;
 }
 
 /**
@@ -106,11 +133,11 @@ function showLetterBoxes(){
  */
 function guessLetter(){
     let letter = this.value;
-    console.log(letter);
     let i;
     let letterFound = false;
     let correctLettersCount = 0;
     
+    this.disabled = true;
 
     for(i = 0; i < selectedWord.length; i++){
         if (letter == selectedWord.charAt(i)){
@@ -131,8 +158,7 @@ function guessLetter(){
     }
     else if(correctLettersCount == selectedWord.length){
         endGame(false);
-    }
-
+    }   
 }
 
 window.onload = init; // Se till att init aktiveras då sidan är inladdad
