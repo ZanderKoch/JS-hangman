@@ -65,7 +65,7 @@ function startGame(){
  * @version 1.0
  */
 function randomWord(){
-    let randomIndex = Math.floor(Math.random() * wordList.length - 1);
+    let randomIndex = Math.floor(Math.random() * wordList.length - 2);
     return wordList[randomIndex];
 }
 
@@ -90,7 +90,6 @@ function showLetterBoxes(){
     let target = document.querySelector("#letterBoxes");
     target.innerHTML = newCode;
     letterBoxes = document.querySelectorAll("#letterBoxes span");
-    console.log(letterBoxes);
 }
 
 
@@ -108,11 +107,24 @@ function guessLetter(){
     
 
     for(i = 0; i < selectedWord.length; i++){
-        if (letter == selectedWord.charAt(i)) {
-            console.log(letterBoxes);
+        if (letter == selectedWord.charAt(i)){
             letterBoxes[i].innerHTML = letter;
             letterFound = true;
         }
+        if(letterBoxes[i].innerHTML != "&nbsp;"){
+            correctLettersCount++;
+        }
+    }
+
+    if(!letterFound){
+        hangmanImgNr++;
+        hangmanImg.src = "pics/h" + hangmanImgNr + ".png";
+        if (hangmanImgNr == 6){
+            endGame(true);
+        }
+    }
+    else if(correctLettersCount == selectedWord.length){
+        endGame(false);
     }
 
 }
